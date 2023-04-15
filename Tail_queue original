@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <string.h> 
+
+typedef struct demo_link_list_s
+{
+    int id;
+    char name[16];
+    struct demo_link_list_s* next;
+}demo_link_list_t;
+
+
+static demo_link_list_t* root;
+
+int main()
+{
+    demo_link_list_t* tmp;
+    tmp = malloc(sizeof(demo_link_list_t));
+    
+        if (NULL == tmp)
+        {
+            return ;
+        }
+    
+    memset(tmp,0,sizeof(demo_link_list_t));
+    tmp->id = 1;
+    strcpy(tmp->name,"item01");
+
+
+    if (NULL == root)
+    {
+        root = tmp;
+    }
+
+    demo_link_list_t* tmp2;
+    tmp2 = malloc(sizeof(demo_link_list_t));
+    if (NULL == tmp2)
+    {
+        return ;
+    }
+    memset(tmp2, 0, sizeof(demo_link_list_t));
+    tmp2->id = 2;
+    strcpy(tmp2->name, "item02");
+
+    root->next = tmp2;
+
+    demo_link_list_t* tmp3 = root;
+    for (;;)
+    {
+        if (NULL == tmp3)
+        {
+            break;
+        }
+        printf("id:%d name:%s\n", tmp3->id, tmp3->name);
+        tmp3 = tmp3->next;
+
+    }
+
+    return 0;
+}
+
+
