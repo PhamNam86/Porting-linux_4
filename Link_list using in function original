@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef struct demo_link_list_s
+{
+    int id;
+    char name[16];
+    struct demo_link_list_s* next;
+}demo_link_list_t;
+
+
+int add_item_link_list(demo_link_list_t** my_root_list, demo_link_list_t* record)
+{
+    demo_link_list_t* tmp;
+    if (NULL == *my_root_list) 
+    {
+        *my_root_list = record;
+        return 0;
+    }
+    tmp = *my_root_list;
+    while (NULL != tmp) 
+    {
+        if (NULL == tmp->next) 
+        {
+            tmp->next = record  ;
+            return 1;
+        }
+       tmp= tmp->next  ;
+    }
+    return -1;
+}
+
+int list_for_each(demo_link_list_t* my_list)
+{
+    demo_link_list_t* root = my_list;
+    for (;;) 
+    {
+        if (root == NULL) 
+        {
+            break;
+        }
+        printf("id:%d\n name:%s\n",root->id,root->name);
+        root = root->next;
+    }
+    return 0;
+}
+
+int main() 
+{
+    demo_link_list_t* root_list = NULL;
+    demo_link_list_t* tmp;
+
+    tmp = malloc(sizeof(demo_link_list_t));
+    if (NULL == tmp) 
+    {
+        return -1;
+    }
+    memset(tmp,0,sizeof(demo_link_list_t));
+    tmp->id = 01;
+    strcpy(tmp->name,"Hai");
+    add_item_link_list(&root_list,tmp);
+
+    tmp = malloc(sizeof(demo_link_list_t));
+    if (NULL == tmp)
+    {
+        return -1;
+    }
+    memset(tmp, 0, sizeof(demo_link_list_t));
+    tmp->id = 02;
+    strcpy(tmp->name, "Ngoc");
+    add_item_link_list(&root_list, tmp);
+
+    list_for_each(root_list);
+
+    return 0;
+}
