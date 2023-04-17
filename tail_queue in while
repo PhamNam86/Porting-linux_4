@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <string.h>
+
+
+typedef struct demo_link_list_2s 
+{
+    int id;
+    char name[16];
+    struct demo_link_list_2s* next;
+    struct demo_link_list_2s* pre;
+}demo_link_list_2t;
+
+int add_link_list_item(demo_link_list_2t** my_list,demo_link_list_2t* record)
+{
+    demo_link_list_2t* tmp;
+    if (NULL == *my_list) 
+    {
+        *my_list = record;
+        return 0;
+    }
+    tmp = *my_list;
+    while (NULL != tmp) 
+    {
+        if (NULL == tmp->next) 
+        {
+            tmp->next = record;
+            record->pre = tmp;
+            return 1;
+        }
+        tmp = tmp->next;
+    }
+    return -1;
+}
+
+int main() 
+{
+    demo_link_list_2t* root = NULL;
+    demo_link_list_2t* tmp;
+    
+
+    tmp = malloc(sizeof(demo_link_list_2t));
+    if(NULL == tmp)
+    {
+        return -1;
+    }
+    memset(tmp,0,sizeof(demo_link_list_2t));
+    tmp->id = 03;
+    strcpy(tmp->name,"item-03");
+    add_link_list_item(&root,tmp);
+
+    tmp = malloc(sizeof(demo_link_list_2t));
+    if (NULL == tmp)
+    {
+        return -1;
+    }
+    memset(tmp,0,sizeof(demo_link_list_2t));
+    tmp->id = 04;
+    strcpy(tmp->name,"item-04");
+    add_link_list_item(&root, tmp);
+
+    demo_link_list_2t* tmp3 = root;
+
+    for (;;) 
+    {
+        if (NULL == tmp3) 
+        {
+            break;
+        }
+        printf("id:%d\t name:%s\n",tmp3->id,tmp3->name);
+        tmp3 = tmp3->next;
+    }
+
+    return 0;
+}
