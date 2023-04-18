@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <string.h>
+typedef struct demo_link_list_s 
+{
+    int id;
+    char name[16];
+    struct demo_link_list_s* next;
+    struct demo_link_list_s* pre;
+}demo_link_list_t;
+
+int add_link_list_item(demo_link_list_t** head, demo_link_list_t** tail, demo_link_list_t* record)
+{
+    demo_link_list_t* tmp;
+
+    if (NULL == *head) 
+    {
+        *head = record;
+        return 0;
+    }
+
+    
+    (*tail)->next = record;
+    record->pre = (*tail);
+
+    return 1;
+}
+
+int main() 
+{
+    demo_link_list_t* tmp;
+    demo_link_list_t* head = NULL;
+    demo_link_list_t* tail = NULL;
+
+    tmp = malloc(sizeof(demo_link_list_t));
+    
+    if (NULL == tmp) 
+    {
+        return -1;
+    }
+    memset(tmp,0,sizeof(demo_link_list_t));
+    tmp->id = 05;
+    strcpy(tmp->name,"hello");
+    add_link_list_item(&head,&tail,tmp);
+    tail = tmp;
+
+    tmp = malloc(sizeof(demo_link_list_t));
+
+    if (NULL == tmp)
+    {
+        return -1;
+    }
+    memset(tmp, 0, sizeof(demo_link_list_t));
+    tmp->id = 06;
+    strcpy(tmp->name, "world");
+    add_link_list_item(&head,&tail,tmp);
+    tail = tmp;
+
+    tmp = malloc(sizeof(demo_link_list_t));
+
+    if (NULL == tmp)
+    {
+        return -1;
+    }
+    memset(tmp, 0, sizeof(demo_link_list_t));
+    tmp->id = 07;
+    strcpy(tmp->name, "class");
+    add_link_list_item(&head, &tail, tmp);
+    tail = tmp;
+
+    tmp = malloc(sizeof(demo_link_list_t));
+
+    if (NULL == tmp)
+    {
+        return -1;
+    }
+    memset(tmp, 0, sizeof(demo_link_list_t));
+    tmp->id = 8;
+    strcpy(tmp->name, "!!!");
+    add_link_list_item(&head, &tail, tmp);
+    tail = tmp;
+
+    demo_link_list_t* tmp3 = head;
+
+    for (;;)
+    {
+        if (NULL == tmp3)
+        {
+            break;
+        }
+        printf("id:%d\t name:%s\n", tmp3->id, tmp3->name);
+        tmp3 = tmp3->next;
+
+    }
+
+    return 0;
+}
