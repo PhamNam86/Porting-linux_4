@@ -1,0 +1,130 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef struct link_list_s 
+{
+    int value;
+    char name[16];
+    struct link_list_s* next;
+    struct link_list_s* pre;
+}link_list_t;
+
+
+int add_link_list_item(link_list_t** my_head,link_list_t** my_tail, link_list_t* record)
+{
+    link_list_t* tmp;
+    if ( NULL == *my_head )
+    {
+        *my_head = record;
+        return 0;
+    }
+
+    (*my_tail)->next = record;
+    record->pre = *my_tail;
+
+    return 1;
+}
+
+int delete_link_list_item(link_list_t** my_head, link_list_t** my_tail, link_list_t* record)
+{
+    link_list_t* tmp1, * tmp2;
+    if (record == *my_head) 
+    {
+    
+        if (NULL != (*my_head)->next) 
+        {
+            (*my_head)->next->pre = NULL;
+            return 0;
+        }
+        else 
+        {
+            (*my_tail) = NULL;
+            return 0;
+        }
+        
+        free(record);
+    }
+    
+    
+    if (record == *my_tail)
+    {
+        if (NULL != (*my_tail)->pre)
+        {
+            (*my_tail)->pre->next = NULL;
+            return 0;
+        }
+        else
+        {
+            (*my_head) = NULL;
+            
+            return 0;
+        }
+       free(record); 
+    }
+
+    tmp1 = record->next;
+    tmp2 = record->pre;
+
+    tmp1->pre = tmp2;
+    tmp2->next = tmp1;
+    
+    free(record);
+    return 0;
+}
+
+int main()
+{
+    link_list_t* tmp, *tmp_2, *tmp_3;
+    link_list_t* my_head = NULL;
+    link_list_t* my_tail = NULL;
+
+    tmp = malloc(sizeof(link_list_t));
+    if (NULL == tmp) 
+    {
+        return -1;
+    }
+    memset(tmp,0,sizeof(link_list_t));
+    tmp->value = 1;
+    strcpy(tmp->name,"item-01");
+    add_link_list_item(&my_head,&my_tail,tmp);
+    my_tail = tmp;
+
+    tmp_2 = malloc(sizeof(link_list_t));
+    if (NULL == tmp_2)
+    {
+        return -1;
+    }
+    memset(tmp_2, 0, sizeof(link_list_t));
+    tmp_2->value = 2;
+    strcpy(tmp_2->name, "item-02");
+    add_link_list_item(&my_head, &my_tail, tmp_2);
+    my_tail = tmp_2;
+
+
+    tmp_3 = malloc(sizeof(link_list_t));
+    if (NULL == tmp_3)
+    {
+        return -1;
+    }
+    memset(tmp_3, 0, sizeof(link_list_t));
+    tmp_3->value = 3;
+    strcpy(tmp_3->name, "item-03");
+    add_link_list_item(&my_head, &my_tail, tmp_3);
+    my_tail = tmp_3;
+
+
+    delete_link_list_item(&my_head,&my_tail,tmp_2);
+
+    link_list_t* root = my_head;
+    for (;;)
+    {
+        if (NULL == root) 
+        {
+            break;
+        }
+        printf("value: %d\t Name:%s\n",root->value,root->name);
+        root = root->next;
+    }
+
+    return 0;
+}
